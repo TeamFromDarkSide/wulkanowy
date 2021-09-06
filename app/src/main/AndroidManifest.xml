@@ -45,6 +45,7 @@
         tools:ignore="GoogleAppIndexingWarning,UnusedAttribute">
         <activity
             android:name=".ui.modules.splash.SplashActivity"
+            android:exported="true"
             android:screenOrientation="portrait"
             android:theme="@style/WulkanowyTheme.SplashScreen"
             tools:ignore="LockedOrientationActivity">
@@ -74,6 +75,7 @@
         <activity
             android:name=".ui.modules.timetablewidget.TimetableWidgetConfigureActivity"
             android:excludeFromRecents="true"
+            android:exported="true"
             android:noHistory="true"
             android:theme="@style/WulkanowyTheme.WidgetAccountSwitcher">
             <intent-filter>
@@ -83,6 +85,7 @@
         <activity
             android:name=".ui.modules.luckynumberwidget.LuckyNumberWidgetConfigureActivity"
             android:excludeFromRecents="true"
+            android:exported="true"
             android:noHistory="true"
             android:theme="@style/WulkanowyTheme.WidgetAccountSwitcher">
             <intent-filter>
@@ -107,6 +110,7 @@
         </receiver>
         <receiver
             android:name=".ui.modules.luckynumberwidget.LuckyNumberWidgetProvider"
+            android:exported="true"
             android:label="@string/lucky_number_title">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
@@ -134,10 +138,6 @@
                 android:resource="@xml/provider_paths" />
         </provider>
 
-        <meta-data
-            android:name="install_channel"
-            android:value="${install_channel}" />
-
         <!-- workaround for https://github.com/firebase/firebase-android-sdk/issues/473 enabled:false -->
         <!-- https://firebase.googleblog.com/2017/03/take-control-of-your-firebase-init-on.html -->
         <provider
@@ -147,31 +147,31 @@
             android:exported="false" />
 
         <meta-data
+            android:name="install_channel"
+            android:value="${install_channel}" />
+        <meta-data
             android:name="firebase_analytics_collection_enabled"
             android:value="${firebase_enabled}" />
-
         <meta-data
             android:name="google_analytics_adid_collection_enabled"
             android:value="${firebase_enabled}" />
-
         <meta-data
             android:name="firebase_crashlytics_collection_enabled"
             android:value="${firebase_enabled}" />
-
         <meta-data
             android:name="firebase_messaging_auto_init_enabled"
             android:value="${firebase_enabled}" />
-
         <meta-data
             android:name="firebase_inapp_messaging_auto_data_collection_enabled"
             android:value="${firebase_enabled}" />
-
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_icon"
             android:resource="@drawable/ic_stat_all" />
-
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_channel_id"
             android:value="push_channel" />
+        <meta-data
+            android:name="com.google.android.gms.ads.APPLICATION_ID"
+            android:value="ca-app-pub-3940256099942544~3347511713" />
     </application>
 </manifest>
