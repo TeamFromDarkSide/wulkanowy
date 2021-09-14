@@ -1,10 +1,12 @@
 package io.github.wulkanowy.ui.modules.about
 
+import io.github.wulkanowy.data.repositories.AdsRepository
 import io.github.wulkanowy.data.repositories.StudentRepository
 import io.github.wulkanowy.ui.base.BasePresenter
 import io.github.wulkanowy.ui.base.ErrorHandler
 import io.github.wulkanowy.utils.AnalyticsHelper
 import io.github.wulkanowy.utils.AppInfo
+import kotlinx.coroutines.launch
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -12,7 +14,8 @@ class AboutPresenter @Inject constructor(
     errorHandler: ErrorHandler,
     studentRepository: StudentRepository,
     private val appInfo: AppInfo,
-    private val analytics: AnalyticsHelper
+    private val analytics: AnalyticsHelper,
+    private val adsRepository: AdsRepository
 ) : BasePresenter<AboutView>(errorHandler, studentRepository) {
 
     override fun onAttachView(view: AboutView) {
@@ -76,24 +79,45 @@ class AboutPresenter @Inject constructor(
                     openPrivacyPolicy()
                     analytics.logEvent("about_open", "name" to "privacy")
                 }
+                supportRes?.first -> {
+                    Timber.i("Opening support ad")
+                    loadSupportAd()
+                    analytics.logEvent("about_open", "name" to "ad")
+                }
             }
         }
     }
 
     private fun loadData() {
         view?.run {
-            updateData(listOfNotNull(
-                versionRes,
-                creatorsRes,
-                feedbackRes,
-                faqRes,
-                discordRes,
-                facebookRes,
-                twitterRes,
-                homepageRes,
-                licensesRes,
-                privacyRes
-            ))
+            updateData(
+                listOfNotNull(
+                    versionRes,
+                    creatorsRes,
+                    feedbackRes,
+                    faqRes,
+                    supportRes,
+                    discordRes,
+                    facebookRes,
+                    twitterRes,
+                    homepageRes,
+                    licensesRes,
+                    privacyRes
+                )
+            )
+        }
+    }
+
+    private fun loadSupportAd() {
+        launch {
+            view?.showProgress(true)
+            view?.showContent(false)
+            val interstitialAd = adsRepository.getSupportAd()
+
+            interstitialAd?.let { view?.openSupportAd(it) }
+
+            view?.showProgress(false)
+            view?.showContent(true)
         }
     }
 }

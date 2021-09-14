@@ -3,7 +3,9 @@ package io.github.wulkanowy.ui.modules.about
 import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.view.View
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.gms.ads.interstitial.InterstitialAd
 import dagger.hilt.android.AndroidEntryPoint
 import io.github.wulkanowy.R
 import io.github.wulkanowy.databinding.FragmentAboutBinding
@@ -129,6 +131,15 @@ class AboutFragment : BaseFragment<FragmentAboutBinding>(R.layout.fragment_about
             )
         }
 
+    override val supportRes: Triple<String, String, Drawable?>?
+        get() = context?.run {
+            Triple(
+                "Support",
+                "Watch ad to support this app",
+                getCompatDrawable(R.drawable.ic_about_privacy)
+            )
+        }
+
     override val titleStringId get() = R.string.about_title
 
     companion object {
@@ -155,6 +166,14 @@ class AboutFragment : BaseFragment<FragmentAboutBinding>(R.layout.fragment_about
             items = data
             notifyDataSetChanged()
         }
+    }
+
+    override fun showProgress(show: Boolean) {
+        binding.aboutProgress.isVisible = show
+    }
+
+    override fun showContent(show: Boolean) {
+        binding.aboutRecycler.isVisible = show
     }
 
     override fun openAppInMarket() {
@@ -221,6 +240,10 @@ class AboutFragment : BaseFragment<FragmentAboutBinding>(R.layout.fragment_about
             "https://wulkanowy.github.io/polityka-prywatnosci.html",
             ::showMessage
         )
+    }
+
+    override fun openSupportAd(interstitialAd: InterstitialAd) {
+        interstitialAd.show(requireActivity())
     }
 
     override fun onDestroyView() {

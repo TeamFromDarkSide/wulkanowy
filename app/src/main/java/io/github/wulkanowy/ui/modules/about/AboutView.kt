@@ -1,6 +1,7 @@
 package io.github.wulkanowy.ui.modules.about
 
 import android.graphics.drawable.Drawable
+import com.google.android.gms.ads.interstitial.InterstitialAd
 import io.github.wulkanowy.ui.base.BaseView
 
 interface AboutView : BaseView {
@@ -25,9 +26,15 @@ interface AboutView : BaseView {
 
     val privacyRes: Triple<String, String, Drawable?>?
 
+    val supportRes: Triple<String, String, Drawable?>?
+
     fun initView()
 
     fun updateData(data: List<Triple<String, String, Drawable?>>)
+
+    fun showProgress(show: Boolean)
+
+    fun showContent(show: Boolean)
 
     fun openAppInMarket()
 
@@ -50,4 +57,6 @@ interface AboutView : BaseView {
     fun openCreators()
 
     fun openPrivacyPolicy()
+
+    fun openSupportAd(interstitialAd: InterstitialAd)
 }
