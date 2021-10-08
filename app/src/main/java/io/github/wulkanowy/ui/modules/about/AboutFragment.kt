@@ -131,15 +131,6 @@ class AboutFragment : BaseFragment<FragmentAboutBinding>(R.layout.fragment_about
             )
         }
 
-    override val supportRes: Triple<String, String, Drawable?>?
-        get() = context?.run {
-            Triple(
-                "Support",
-                "Watch ad to support this app",
-                getCompatDrawable(R.drawable.ic_about_privacy)
-            )
-        }
-
     override val titleStringId get() = R.string.about_title
 
     companion object {

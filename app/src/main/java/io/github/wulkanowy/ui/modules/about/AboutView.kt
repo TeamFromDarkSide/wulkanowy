@@ -26,8 +26,6 @@ interface AboutView : BaseView {
 
     val privacyRes: Triple<String, String, Drawable?>?
 
-    val supportRes: Triple<String, String, Drawable?>?
-
     fun initView()
 
     fun updateData(data: List<Triple<String, String, Drawable?>>)
