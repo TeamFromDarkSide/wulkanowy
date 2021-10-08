@@ -1,5 +1,6 @@
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
+apply plugin: 'kotlinx-serialization'
 apply plugin: 'kotlin-parcelize'
 apply plugin: 'kotlin-kapt'
 apply plugin: 'dagger.hilt.android.plugin'
@@ -21,16 +22,16 @@ android {
         testApplicationId "io.github.tests.wulkanowy"
         minSdkVersion 21
         targetSdkVersion 30
-        versionCode 95
-        versionName "1.2.2"
+        versionCode 97
+        versionName "1.3.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
 
         resValue "string", "app_name", "Wulkanowy"
-        buildConfigField "long", "BUILD_TIMESTAMP", String.valueOf(System.currentTimeMillis())
 
         manifestPlaceholders = [
-                firebase_enabled: project.hasProperty("enableFirebase")
+                firebase_enabled: project.hasProperty("enableFirebase"),
+                buildTimestamp: String.valueOf(System.currentTimeMillis())
         ]
         javaCompileOptions {
             annotationProcessorOptions {
@@ -96,8 +97,18 @@ android {
         }
     }
 
+    playConfigs {
+        play { enabled.set(true) }
+    }
+
     buildFeatures {
         viewBinding true
+    }
+
+    bundle {
+        language {
+            enableSplit = false
+        }
     }
 
     testOptions.unitTests {
@@ -130,11 +141,10 @@ kapt {
 }
 
 play {
-    serviceAccountEmail = System.getenv("PLAY_SERVICE_ACCOUNT_EMAIL") ?: "jan@fakelog.cf"
-    serviceAccountCredentials = file('key.p12')
     defaultToAppBundles = false
     track = 'production'
     updatePriority = 3
+    enabled.set(false)
 }
 
 huaweiPublish {
@@ -153,15 +163,16 @@ ext {
     room = "2.3.0"
     chucker = "3.5.2"
     mockk = "1.12.0"
-    moshi = "1.12.0"
+    coroutines = "1.5.2"
 }
 
 dependencies {
-    implementation "io.github.wulkanowy:sdk:1.2.2"
+    implementation "io.github.wulkanowy:sdk:1.3.0"
 
     coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:1.1.5'
 
-    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.5.2"
+    implementation "org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.0"
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutines"
 
     implementation "androidx.core:core-ktx:1.6.0"
     implementation "androidx.activity:activity-ktx:1.3.1"
@@ -174,7 +185,7 @@ dependencies {
     implementation "androidx.recyclerview:recyclerview:1.2.1"
     implementation "androidx.viewpager:viewpager:1.0.0"
     implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.1.0"
-    implementation "androidx.constraintlayout:constraintlayout:2.1.0"
+    implementation "androidx.constraintlayout:constraintlayout:2.1.1"
     implementation "androidx.coordinatorlayout:coordinatorlayout:1.1.0"
     implementation "com.google.android.material:material:1.4.0"
     implementation "com.github.wulkanowy:material-chips-input:2.3.1"
@@ -198,10 +209,6 @@ dependencies {
     implementation 'com.github.ncapdevi:FragNav:3.3.0'
     implementation "com.github.YarikSOffice:lingver:1.3.0"
 
-    implementation "com.squareup.moshi:moshi:$moshi"
-    implementation "com.squareup.moshi:moshi-adapters:$moshi"
-    kapt "com.squareup.moshi:moshi-kotlin-codegen:$moshi"
-
     implementation "com.jakewharton.timber:timber:5.0.1"
     implementation "at.favre.lib:slf4j-timber:1.0.1"
     implementation 'com.github.bastienpaulfr:Treessence:1.0.4'
@@ -211,17 +218,17 @@ dependencies {
     implementation 'me.xdrop:fuzzywuzzy:1.3.1'
     implementation 'com.fredporciuncula:flow-preferences:1.5.0'
 
-    playImplementation platform('com.google.firebase:firebase-bom:28.4.0')
+    playImplementation platform('com.google.firebase:firebase-bom:28.4.1')
     playImplementation 'com.google.firebase:firebase-analytics-ktx'
     playImplementation 'com.google.firebase:firebase-messaging:'
     playImplementation 'com.google.firebase:firebase-crashlytics:'
-    playImplementation 'com.google.android.play:core:1.10.1'
+    playImplementation 'com.google.android.play:core:1.10.2'
     playImplementation 'com.google.android.play:core-ktx:1.8.1'
     playImplementation 'com.google.android.gms:play-services-ads:20.3.0'
     playImplementation 'com.google.android.ump:user-messaging-platform:2.0.0'
 
     hmsImplementation 'com.huawei.hms:hianalytics:6.2.0.301'
-    hmsImplementation 'com.huawei.agconnect:agconnect-crash:1.6.0.300'
+    hmsImplementation 'com.huawei.agconnect:agconnect-crash:1.6.1.200'
 
     releaseImplementation "com.github.ChuckerTeam.Chucker:library-no-op:$chucker"
 
@@ -230,7 +237,7 @@ dependencies {
 
     testImplementation "junit:junit:4.13.2"
     testImplementation "io.mockk:mockk:$mockk"
-    testImplementation 'org.jetbrains.kotlinx:kotlinx-coroutines-test:1.5.2'
+    testImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:$coroutines"
     testImplementation "org.jetbrains.kotlin:kotlin-test:$kotlin_version"
 
     testImplementation 'org.robolectric:robolectric:4.6.1'

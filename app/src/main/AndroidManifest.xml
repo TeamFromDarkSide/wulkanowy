@@ -96,6 +96,23 @@
         <service
             android:name=".services.widgets.TimetableWidgetService"
             android:permission="android.permission.BIND_REMOTEVIEWS" />
+        <service
+            android:name=".services.piggyback.VulcanNotificationListenerService"
+            android:exported="true"
+            android:permission="android.permission.BIND_NOTIFICATION_LISTENER_SERVICE">
+            <intent-filter>
+                <action android:name="android.service.notification.NotificationListenerService" />
+            </intent-filter>
+        </service>
+        <service
+            android:name=".services.messaging.AppMessagingService"
+            android:exported="false"
+            tools:ignore="MissingClass">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
+
 
         <receiver
             android:name=".ui.modules.timetablewidget.TimetableWidgetProvider"
@@ -136,13 +153,18 @@
                 android:resource="@xml/provider_paths" />
         </provider>
 
+        <meta-data
+            android:name="buildTimestamp"
+            android:value="${buildTimestamp}" />
+
         <!-- workaround for https://github.com/firebase/firebase-android-sdk/issues/473 enabled:false -->
         <!-- https://firebase.googleblog.com/2017/03/take-control-of-your-firebase-init-on.html -->
         <provider
             android:name="com.google.firebase.provider.FirebaseInitProvider"
             android:authorities="${applicationId}.firebaseinitprovider"
             android:enabled="${firebase_enabled}"
-            android:exported="false" />
+            android:exported="false"
+            tools:ignore="MissingClass" />
 
         <meta-data
             android:name="install_channel"
