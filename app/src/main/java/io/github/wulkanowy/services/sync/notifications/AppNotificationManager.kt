@@ -101,6 +101,8 @@ class AppNotificationManager @Inject constructor(
             .setGroup(group)
             .setStyle(NotificationCompat.InboxStyle().setSummaryText(student.nickOrName))
             .setGroupSummary(true)
+            .setPriority(NotificationCompat.PRIORITY_MIN)
+            .setSilent(true)
             .build()
 
         notificationManager.notify(groupId.toInt(), summaryNotification)
