@@ -68,7 +68,8 @@ class AppNotificationManager @Inject constructor(
     ) {
         val groupType = notificationData.type.group ?: return
         val group = "${groupType}_${student.id}"
-        val groupId = student.id * 100 + notificationData.type.ordinal
+
+        notificationData.sendSummaryNotification(group, student)
 
         notificationData.lines.forEach { item ->
             val title = context.resources.getQuantityString(notificationData.titleStringRes, 1)
@@ -88,11 +89,15 @@ class AppNotificationManager @Inject constructor(
 
             saveNotification(title, item, notificationData, student)
         }
+    }
+
+    private fun NotificationData.sendSummaryNotification(group: String, student: Student) {
+        val groupId = student.id * 100 + type.ordinal
 
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N) return
 
-        val summaryNotification = getDefaultNotificationBuilder(notificationData)
-            .setSmallIcon(notificationData.icon)
+        val summaryNotification = getDefaultNotificationBuilder(this)
+            .setSmallIcon(icon)
             .setGroup(group)
             .setStyle(NotificationCompat.InboxStyle().setSummaryText(student.nickOrName))
             .setGroupSummary(true)
