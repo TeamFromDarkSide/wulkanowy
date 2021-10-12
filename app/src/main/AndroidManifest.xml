@@ -153,10 +153,6 @@
                 android:resource="@xml/provider_paths" />
         </provider>
 
-        <meta-data
-            android:name="buildTimestamp"
-            android:value="${buildTimestamp}" />
-
         <!-- workaround for https://github.com/firebase/firebase-android-sdk/issues/473 enabled:false -->
         <!-- https://firebase.googleblog.com/2017/03/take-control-of-your-firebase-init-on.html -->
         <provider
