@@ -96,7 +96,11 @@ class AppNotificationManager @Inject constructor(
 
         val summaryNotification = getDefaultNotificationBuilder(this)
             .setSmallIcon(icon)
-            .setStyle(NotificationCompat.InboxStyle().setSummaryText(student.nickOrName))
+            .setStyle(
+                NotificationCompat.BigTextStyle()
+                    .setSummaryText(student.nickOrName)
+                    .bigText(group)
+            )
             .setPriority(NotificationCompat.PRIORITY_MIN)
             .setSilent(true)
             .setGroupAlertBehavior(NotificationCompat.GROUP_ALERT_SUMMARY)
