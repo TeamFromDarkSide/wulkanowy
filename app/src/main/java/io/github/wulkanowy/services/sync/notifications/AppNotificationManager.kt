@@ -102,6 +102,7 @@ class AppNotificationManager @Inject constructor(
                     .bigText(group)
             )
             .setPriority(NotificationCompat.PRIORITY_MIN)
+            .setLocalOnly(true)
             .setSilent(true)
             .setGroupAlertBehavior(NotificationCompat.GROUP_ALERT_SUMMARY)
             .setGroup(group)
