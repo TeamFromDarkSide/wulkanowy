@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.app.PendingIntent
 import android.content.Context
 import android.os.Build
+import androidx.annotation.PluralsRes
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import dagger.hilt.android.qualifiers.ApplicationContext
@@ -91,17 +92,18 @@ class AppNotificationManager @Inject constructor(
         }
     }
 
-    private fun NotificationData.sendSummaryNotification(group: String, student: Student) {
+    private fun MultipleNotificationsData.sendSummaryNotification(group: String, student: Student) {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N) return
 
         val summaryNotification = getDefaultNotificationBuilder(this)
             .setSmallIcon(icon)
+            .setContentTitle(getQuantityString(titleStringRes, lines.size))
+            .setContentText(getQuantityString(contentStringRes, lines.size))
             .setStyle(
-                NotificationCompat.BigTextStyle()
+                NotificationCompat.InboxStyle()
                     .setSummaryText(student.nickOrName)
-                    .bigText(group)
+                    .also { builder -> lines.forEach { builder.addLine(it) } }
             )
-            .setPriority(NotificationCompat.PRIORITY_MIN)
             .setLocalOnly(true)
             .setSilent(true)
             .setGroupAlertBehavior(NotificationCompat.GROUP_ALERT_SUMMARY)
@@ -153,5 +155,9 @@ class AppNotificationManager @Inject constructor(
         )
 
         notificationRepository.saveNotification(notificationEntity)
+    }
+
+    private fun getQuantityString(@PluralsRes res: Int, arg: Int): String {
+        return context.resources.getQuantityString(res, arg, arg)
     }
 }
