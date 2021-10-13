@@ -92,19 +92,19 @@ class AppNotificationManager @Inject constructor(
     }
 
     private fun NotificationData.sendSummaryNotification(group: String, student: Student) {
-        val groupId = student.id * 100 + type.ordinal
-
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N) return
 
         val summaryNotification = getDefaultNotificationBuilder(this)
             .setSmallIcon(icon)
-            .setGroup(group)
             .setStyle(NotificationCompat.InboxStyle().setSummaryText(student.nickOrName))
-            .setGroupSummary(true)
             .setPriority(NotificationCompat.PRIORITY_MIN)
             .setSilent(true)
+            .setGroupAlertBehavior(NotificationCompat.GROUP_ALERT_SUMMARY)
+            .setGroup(group)
+            .setGroupSummary(true)
             .build()
 
+        val groupId = student.id * 100 + type.ordinal
         notificationManager.notify(groupId.toInt(), summaryNotification)
     }
 
