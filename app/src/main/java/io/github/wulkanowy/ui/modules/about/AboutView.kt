@@ -1,7 +1,6 @@
 package io.github.wulkanowy.ui.modules.about
 
 import android.graphics.drawable.Drawable
-import com.google.android.gms.ads.interstitial.InterstitialAd
 import io.github.wulkanowy.ui.base.BaseView
 
 interface AboutView : BaseView {
@@ -55,6 +54,4 @@ interface AboutView : BaseView {
     fun openCreators()
 
     fun openPrivacyPolicy()
-
-    fun openSupportAd(interstitialAd: InterstitialAd)
 }

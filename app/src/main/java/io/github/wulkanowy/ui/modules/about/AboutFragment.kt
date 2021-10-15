@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.view.View
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.google.android.gms.ads.interstitial.InterstitialAd
 import dagger.hilt.android.AndroidEntryPoint
 import io.github.wulkanowy.R
 import io.github.wulkanowy.databinding.FragmentAboutBinding
@@ -231,10 +230,6 @@ class AboutFragment : BaseFragment<FragmentAboutBinding>(R.layout.fragment_about
             "https://wulkanowy.github.io/polityka-prywatnosci.html",
             ::showMessage
         )
-    }
-
-    override fun openSupportAd(interstitialAd: InterstitialAd) {
-        interstitialAd.show(requireActivity())
     }
 
     override fun onDestroyView() {

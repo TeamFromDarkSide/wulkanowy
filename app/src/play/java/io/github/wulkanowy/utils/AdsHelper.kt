@@ -1,4 +1,4 @@
-package io.github.wulkanowy.data.repositories
+package io.github.wulkanowy.utils
 
 import android.content.Context
 import com.google.android.gms.ads.AdRequest
@@ -8,12 +8,10 @@ import com.google.android.gms.ads.interstitial.InterstitialAd
 import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback
 import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
-import javax.inject.Singleton
 import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
 
-@Singleton
-class AdsRepository @Inject constructor(@ApplicationContext private val context: Context) {
+class AdsHelper @Inject constructor(@ApplicationContext private val context: Context) {
 
     suspend fun getSupportAd(): InterstitialAd? {
         MobileAds.initialize(context)
