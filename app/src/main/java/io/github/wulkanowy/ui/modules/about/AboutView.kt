@@ -29,10 +29,6 @@ interface AboutView : BaseView {
 
     fun updateData(data: List<Triple<String, String, Drawable?>>)
 
-    fun showProgress(show: Boolean)
-
-    fun showContent(show: Boolean)
-
     fun openAppInMarket()
 
     fun openDebugScreen()
